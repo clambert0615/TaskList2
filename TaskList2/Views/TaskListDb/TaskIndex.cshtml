@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "TaskIndex";
+}
+@model List<Tasks>
+<h1>Task Index</h1><br>
+<h3> To sort the list by Due Date or Completion status, click on the column heading!</h3><br>
+<h3>To search the description for key words user the search box!</h3><br>
+
+<form asp-controller="TaskListDb" asp-action="TaskIndex" method="post">
+    <p>
+        Task Description: <input type="text" name="searchString">
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<table style="width:100%">
+   
+    <tr>
+            <th>Task Description</th>
+            <th><a href="/TaskListDb?sort=DueDate" style="color:black">Due Date</a></th>
+            <th><a href="/TaskListDb?sort=Completion" style="color:black">Completion Status</a></th>
+        </tr>
+ 
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Description</td>
+                <td>@task.DueDate.ToShortDateString()</td>
+                <td>@task.Completion</td>
+                <td>
+                    <button onclick="document.location = '/TaskListDb/UpdateTask?id=@task.Id'"> Edit this task</button>
+                </td>
+                <td>
+                    <button onclick="document.location = '/TaskListDb/DeleteTask?id=@task.Id'"> Remove this task</button>
+                </td>
+            </tr>
+        }
+       
+
+</table>
+<h3><a href="/TaskListDb/AddTask">Add new task</a></h3>
+
